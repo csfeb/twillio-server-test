@@ -1,6 +1,8 @@
 const http = require('http');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
+const port = process.env.PORT;
+
 http
   .createServer((req, res) => {
     // Create TwiML response
@@ -11,6 +13,6 @@ http
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(twiml.toString());
   })
-  .listen(1337, '127.0.0.1');
-
-console.log('TwiML server running at http://127.0.0.1:1337/');
+  .listen(port, () => {
+    console.log(`Listening on port ${port}`);
+  });
