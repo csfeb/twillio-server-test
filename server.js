@@ -5,15 +5,19 @@ const port = process.env.PORT;
 
 http
   .createServer((req, res) => {
-    console.log(`Incoming call with params; ${req.parameters}`);
-    const caller = req.parameters.from;
-    const callerState = req.parameters.from_state;
-
     // Create TwiML response
     const twiml = new VoiceResponse();
 
-    twiml.say('Hello Consumer team! This is a Twilio server.');
-    twiml.say(`You're calling from ${caller} located in ${callerState}`);
+    if (req.parameters) {
+      console.log(`Incoming call with params; ${req.parameters}`);
+      const caller = req.parameters.from;
+      const callerState = req.parameters.from_state;
+
+      twiml.say('Hello Consumer team! This is a Twilio server.');
+      twiml.say(`You're calling from ${caller} located in ${callerState}`);
+    } else {
+      twiml.say('Hello world');
+    }
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(twiml.toString());
